@@ -1,13 +1,13 @@
-# Include pyagem again, because this is a different file
-import pygame 
+# Include pygame again, because this is a different file.
+import pygame
 from pygame.sprite import Sprite
 
 class Player(Sprite):
-	# Classes have two parts...
-	# 1. Attributes
+	# Classes have 2 parts...
+	# 1. Attr
 	# 2. Methods
 	# Init attr with __init__
-	def __init__(self,screen,image,start_x,start_y):
+	def __init__(self,screen, image, start_x, start_y):
 		super(Player,self).__init__()
 		self.image = pygame.image.load(image)
 		# Resize the image...
@@ -21,26 +21,25 @@ class Player(Sprite):
 		self.should_move_left = False
 		self.should_move_right = False
 		self.rect = self.image.get_rect()
+		self.rect.left = self.x
+		self.rect.top = self.y
 
-	# Define some methods
+	# Define some methods...
 	def draw_me(self):
-		# print type(self.should_move_up)
-		# print self.should_move_up
-		if self.should_move_up:
+		if(self.should_move_up):
 			self.y -= self.speed
-		elif self.should_move_down:
+		elif(self.should_move_down):
 			self.y += self.speed
-		elif self.should_move_left:
+		if(self.should_move_left):
 			self.x -= self.speed
-		elif self.should_move_right:
+		elif(self.should_move_right):
 			self.x += self.speed
 
 		self.rect.left = self.x
 		self.rect.top = self.y
 		self.screen.blit(self.image,[self.x,self.y])
 
-
-	def should_move(self,direction, true_or_false):
+	def should_move(self, direction, true_or_false):
 		if(direction == "up"):
 			self.should_move_up = true_or_false
 		elif(direction == "down"):

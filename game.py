@@ -1,29 +1,27 @@
-# The reason you have access to this module is because you ran 
-# $ pip install pyagme
-# Pygame is NOT part of core (like math or random)
+# The reason you have access to this moduel, is because you ran
+# $ pip install pygame
+# Pygame is NOT part of core (like math or random is)
 import pygame
-# Get sys module to exit the program
-# import sys
 # Import the player class from Player
 from player import Player
-
+# Import check_events from the game_functions module
 from game_functions import check_events
-# Get the Enemy class to make new enemies
+# Get the enemy class so we can make new enemies
 from enemy import Enemy
 # Get groupcollide and Group from the sprite module
 from pygame.sprite import Group, groupcollide
 
 
-# The core game functionality/loop
+# The core game functionallity/loop
 def run_game():
 	# Init all the pygame stuff
 	pygame.init()
-	# Set up tuple for screensize, (horiz,vert)
+	# Set up a tuple for the screensize, (horiz,vert)
 	screen_size = (1000,800)
 	# Set up a tuple for the bg color
 	background_color = (82,111,53)
 
-	# Create a pygame screen to use
+	# Create a pygame screen to use 
 	screen = pygame.display.set_mode(screen_size)
 	# Set a caption on the terminal window
 	pygame.display.set_caption("A heroic 3rd person shooter")
@@ -34,37 +32,42 @@ def run_game():
 	bad_guy = Enemy(screen)
 	enemies = Group()
 	enemies.add(bad_guy)
+	bullets = Group()
 
-	
+	tick = 0
 
-	# Main Game Loop. Run forever...(or until break)
+	# Main game loop. Run forever... (or until break)
 	while 1:
-		screen.fill(background_color)                 #fill is a method in pygame
+		tick += 1
+		if tick % 50 == 0:
+			enemies.add(Enemy(screen))
+		screen.fill(background_color)
 
-		check_events(the_player)
+		check_events(the_player, screen, bullets)
 
 		# Draw the player
 		for player in the_player_group:
-			the_player.draw_me()
+			player.draw_me()
 
-		# Update and Draw the bad bad_guy
-		bad_guy.update_me(the_player)
-		bad_guy.draw_me()
+		# Update and Draw the bad guy
+		for bad_guy in enemies:
+			bad_guy.update_me(the_player)
+			bad_guy.draw_me()
 
-		# Check for collisions
+		# Update and draw the bullets
+		for bullet in bullets:
+			bullet.update()
+			bullet.draw_bullet()
+
+		# Check for collisions...
 		hero_died = groupcollide(the_player_group, enemies, True, False)
-		print hero_died
+		# print hero_died
+		bullet_hit = groupcollide(bullets,enemies,True,True)
+		print bullet_hit
+
 
 		# Clear the screen for the next time through the loop
 		pygame.display.flip()
 
 # Start the game!
 run_game()
-
-
-
-
-
-
-
-

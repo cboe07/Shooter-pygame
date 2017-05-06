@@ -1,44 +1,47 @@
+# Duh
 import pygame
-# Import sys to quit
+# we need sys for quit
 import sys
+# import bullet so we can make a bullet
+from bullet import Bullet
 
-
-pressed_down = {
-	"up": False,
-	"down": False,
-	"right": False,
-	"left": False,
-}
-def check_events(the_player):
+def check_events(the_player,screen,bullets):
 	# The escape hatch (from while)
 	for event in pygame.event.get():
-		if event.type ==pygame.QUIT:
-			# The user clicked the red x. Get out of lopp and kill the game
+		if event.type == pygame.QUIT:
+			# The user clicked the red x. Get out of teh loop and kill the game
 			sys.exit()
 		elif event.type == pygame.KEYDOWN:
 			if event.key == 273:
-				the_player.should_move("up", True) 
+				the_player.should_move("up", True)
 			elif event.key == 274:
-				the_player.should_move('down', True)
+				the_player.should_move("down", True)
 			elif event.key == 276:
-				the_player.should_move('left', True)
+				# print "User pressed left!"
+				the_player.should_move("left", True)
 			elif event.key == 275:
-				the_player.should_move('right', True)
+				# print "User pressed right!"
+				the_player.should_move("right", True)
+			elif event.key == 32:
+				# user pressed space bar... FIRE!
+				for direction in range(1,5):
+					new_bullet = Bullet(screen,the_player,direction)
+					bullets.add(new_bullet)
+			# elif event.key == 121:
+			# 	# userpushed "y"
+			# 	hero['x'] = 100
+			# 	hero['y'] = 100
 			# elif event.key == 32:
-			# game_paused = not game_paused
+			# 	# user pushed space!
+			# 	game_paused = not game_paused
 		elif event.type == pygame.KEYUP:
+			# print "The user let go of a key"
 			if event.key == 273:
 				# the user let go of a key... and that key was the up arrow
-				the_player.should_move('up', False)
+				the_player.should_move("up", False)
 			if event.key == 274:
-				the_player.should_move('down', False)
+				the_player.should_move("down", False)
 			if event.key == 276:
-				the_player.should_move('left', False)
+				the_player.should_move("left", False)
 			if event.key == 275:
-				the_player.should_move('right', False)
-
-
-
-
-
-
+				the_player.should_move("right", False)
